@@ -2,7 +2,9 @@
 
 namespace App\Entity\User;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +33,21 @@ use Symfony\Component\Uid\Uuid;
         ],
     ],
 )]
+#[
+    ApiFilter(SearchFilter::class, properties: [
+        'email' => 'ipartial', 
+        'phone' => 'ipartial', 
+        'cell' => 'ipartial', 
+        'nat', 
+        'name.title' => 'ipartial',  
+        'name.first' => 'ipartial',  
+        'name.last' => 'ipartial',  
+        'location.street' => 'ipartial', 
+        'location.city', 'location.state', 'location.postcode', 
+        'registered.date', 'registered.age',
+        'registered.date', 'registered.age',
+    ])
+]
 class User
 {
     use UuidTrait;
@@ -76,7 +93,7 @@ class User
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: UserLogin::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $login;
 
     public function __construct()
