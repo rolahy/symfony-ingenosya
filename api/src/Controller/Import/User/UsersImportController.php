@@ -11,6 +11,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UsersImportController extends AstractImportController
 {
+    public const SEED_KEY = 'seed';
+    public const NAT_KEY = 'nat';
+    public const COUNTRY_KEY = 'country';
+    public const COUNT_KEY = 'count';
+    public const RESULTS_KEY = 'results';
+
+    protected $requiredQueryKeys = [
+        self::SEED_KEY, self::COUNTRY_KEY, self::COUNT_KEY,
+    ];
+
     public function __construct(private UsersApiImportService $usersApiImportService, private UserManager $userManager)
     {
     }
@@ -19,7 +29,13 @@ class UsersImportController extends AstractImportController
     public function __invoke(Request $request): Response
     {
         try {
-            $usersToImport = $this->usersApiImportService->import(http_build_query($request->query->all()));
+            $queries = $request->query->all();
+
+            $this->validateQueryParameters(array_keys($queries));
+
+            $usersToImport = $this->usersApiImportService->import(
+                http_build_query($this->getTransformedQueries($queries))
+            );
 
             $this->userManager->importUsers($usersToImport);
 
@@ -33,5 +49,14 @@ class UsersImportController extends AstractImportController
                 'type' => 'error',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private function getTransformedQueries(array $queries): array
+    {
+        return [
+            self::SEED_KEY => $queries[self::SEED_KEY],
+            self::NAT_KEY => $queries[self::COUNTRY_KEY],
+            self::RESULTS_KEY => $queries[self::COUNT_KEY],
+       ];
     }
 }
