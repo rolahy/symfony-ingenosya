@@ -107,7 +107,7 @@
             },
             methods:{
                 getAllUsers() {
-                    axios.get("http://localhost:4641/api/users").then(function (response) {
+                    axios.get("http://localhost:4641/api/users?page=1&itemsPerPage=100").then(function (response) {
                         app.users = response.data;
                     })
                 },
