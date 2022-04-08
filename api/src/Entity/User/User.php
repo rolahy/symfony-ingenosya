@@ -3,17 +3,29 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Core\Identifiable\DoubleIdTrait;
+use App\Controller\Import\User\UsersImportController;
+use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations: [
+        /* 'import_external_datas' => [
+            'method' => Request::METHOD_GET,
+            'path' => '/users/import',
+            'controller' => UsersImportController::class,
+            'pagination_enabled' => false,
+        ], */
+        'get',
+    ],
+)]
 class User
 {
-    use DoubleIdTrait;
+    use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 10)]
     private $gender;
@@ -52,7 +64,7 @@ class User
 
     public function __construct()
     {
-        $this->uuid = Uuid::v4();
+        $this->id = Uuid::v4();
     }
 
     public function getGender(): ?string

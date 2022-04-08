@@ -4,26 +4,24 @@ namespace App\Entity\Core\Identifiable;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 trait UuidTrait
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true, nullable=false)
-     * @ApiProperty(identifier=true)
-     * @Groups({"read","read.lite"})
-     */
-    private Uuid $uuid;
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ApiProperty(identifier: true)]
+    private Uuid $id;
 
-    public function getUuid()
+    public function getId(): Uuid
     {
-        return $this->uuid;
+        return $this->id;
     }
 
-    public function setUuid(Uuid $uuid)
+    public function setId(Uuid $id)
     {
-        $this->uuid = $uuid;
+        $this->id = $id;
     }
 }

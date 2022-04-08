@@ -3,7 +3,7 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Core\Identifiable\DoubleIdTrait;
+use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserPictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource()]
 class UserPicture
 {
-    use DoubleIdTrait;
+    use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $large;
@@ -26,7 +26,7 @@ class UserPicture
 
     public function __construct()
     {
-        $this->uuid = Uuid::v4();
+        $this->id = Uuid::v4();
     }
 
     public function getLarge(): ?string

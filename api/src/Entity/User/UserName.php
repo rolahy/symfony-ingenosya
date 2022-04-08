@@ -3,7 +3,7 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Core\Identifiable\DoubleIdTrait;
+use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserNameRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource()]
 class UserName
 {
-    use DoubleIdTrait;
+    use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 10)]
     private $title;
@@ -26,7 +26,7 @@ class UserName
 
     public function __construct()
     {
-        $this->uuid = Uuid::v4();
+        $this->id = Uuid::v4();
     }
 
     public function getTitle(): ?string

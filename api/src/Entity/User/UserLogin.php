@@ -2,7 +2,7 @@
 
 namespace App\Entity\User;
 
-use App\Entity\Core\Identifiable\DoubleIdTrait;
+use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserLoginRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -11,7 +11,10 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user_login`')]
 class UserLogin
 {
-    use DoubleIdTrait;
+    use UuidTrait;
+
+    #[ORM\Column(type: 'uuid')]
+    private $uuid;
 
     #[ORM\Column(type: 'string', length: 150)]
     private $username;
@@ -33,7 +36,20 @@ class UserLogin
 
     public function __construct()
     {
-        $this->uuid = Uuid::v4();
+        $this->id = Uuid::v4();
+        $this->uuid = $this->id;
+    }
+
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid($uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     public function getUsername(): ?string

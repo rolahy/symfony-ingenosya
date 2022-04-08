@@ -3,7 +3,7 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Core\Identifiable\DoubleIdTrait;
+use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRegistrerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource()]
 class UserRegistrer
 {
-    use DoubleIdTrait;
+    use UuidTrait;
 
     #[ORM\Column(type: 'datetime')]
     private $date;
@@ -23,7 +23,7 @@ class UserRegistrer
 
     public function __construct()
     {
-        $this->uuid = Uuid::v4();
+        $this->id = Uuid::v4();
     }
 
     public function getDate(): ?\DateTimeInterface
