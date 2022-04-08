@@ -8,10 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserListController extends AbstractController
 {
-    #[Route('', name: 'front_user_list')]
+    #[Route('/{programmingLangage}', name: 'front_user_list', requirements: [
+        'programmingLangage' => 'php|symfony|react|vuejs'
+    ])]
     public function index(): Response
     {
-        return $this->render('user/user_list/index.html.twig', [
+        return $this->render('user/index.html.twig', [
             'controller_name' => 'UserListController',
         ]);
     }
