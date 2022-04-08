@@ -70,6 +70,16 @@ class UserLogin
         $this->uuid = $this->id;
     }
 
+    public function getId(): Uuid
+    {
+        return $this->id;
+    }
+
+    public function setId(Uuid $id)
+    {
+        $this->id = $id;
+    }
+
     public function getUuid(): Uuid
     {
         return $this->uuid;
