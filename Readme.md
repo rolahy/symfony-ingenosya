@@ -78,9 +78,51 @@ A ce niveau, vous pouvez consulter les pages suivantes:
 - FrontOffice: http://localhost:4642
 
  
-# Effectuer les tests:
+# Demo
+### Excercice 1 - Import d'utilisateurs
+**Import succès**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-1-import-users.jpg?raw=true)
 
-Les détails des tests sont fournis dans le sujet.
+**Import avec des paramètres manquantes**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-1-import-users-missing-parameters-key.jpg?raw=true)
+
+### Excercice 2 - API GET /api/users
+**Endpoint**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-2-GET-users.jpg?raw=true)
+
+**Payload**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-2-GET-users-payload.jpg?raw=true)
+
+### Excercice 3 - FrontOffice `GET http://localhost:4642/{langageDeProgrammation}` (php|symfony|vuejs)
+**Endpoint**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-3-programming-languages-path.jpg?raw=true)
 
 
+### Excercice 4 - API Détails utilisateur par `login.uuid`  `GET /api/users/{login.uuid}`
+**Endpoint**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-4-users-details-by-login-uuid.jpg?raw=true)
+
+**Payload**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-4-users-details-by-login-uuid-payload.jpg?raw=true)
+
+
+### Excercice 5 - FrontOffice Détails utilisant en cliquant sur l'icon "Oeil"
+**Actions pour afficher le détails**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-3-programming-languages-path.jpg?raw=true)
+
+
+### Excercice 6 - Evaluation du mot de passe (Non effectué)
+
+
+### Excercice 7 - API Rechercher d'utilisateur par propriété directe ou sous-propriétés `GET /api/users?{propriety}={value_a}&{propriety.sub_propriety}={value_b}`
+**Propriétés possibles**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-7-search-users.jpg?raw=true)
+
+### Excercice 7 - API format JSON avec filtres `GET /api/users.json`
+**Format JSON**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-8-users-json.jpg?raw=true)
+
+
+**Format XML**
+![alt text](https://github.com/rolahy/symfony-ingenosya/blob/develop/demo/exercice-8-users-xml.jpg?raw=true)
 
