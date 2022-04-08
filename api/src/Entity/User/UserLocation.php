@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserLocationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserLocationRepository::class)]
@@ -16,15 +17,19 @@ class UserLocation
     use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['users_login_details'])]
     private $street;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['users_login_details'])]
     private $city;
 
     #[ORM\Column(type: 'string', length: 150)]
+    #[Groups(['users_login_details'])]
     private $state;
 
     #[ORM\Column(type: 'string', length: 5)]
+    #[Groups(['users_login_details'])]
     private $postcode;
 
     public function __construct()

@@ -18,8 +18,10 @@ final class UserLoginFactory
             ->setMd5($data['md5'] ?? null)
             ->setSha1($data['sha1'] ?? null)
             ->setSha256($data['sha256'] ?? null)
-            ->setUuid($data['uuid'] ? Uuid::fromString($data['uuid']) : null)
         ;
+
+        $userLogin->setId($data['uuid'] ? Uuid::fromString($data['uuid']) : null);
+        $userLogin->setUuid($userLogin->getId());
 
         return $userLogin;
     }

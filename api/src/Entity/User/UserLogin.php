@@ -2,27 +2,51 @@
 
 namespace App\Entity\User;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\User\UserLoginDetailsController;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserLoginRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserLoginRepository::class)]
 #[ORM\Table(name: '`user_login`')]
+#[ApiResource(
+    itemOperations: [
+        'get',
+        'login_details' => [
+            'method' => Request::METHOD_GET,
+            'path' => '/users/{uuid}',
+            'normalization_context' => [
+                'groups' => ['users_login_details'],
+            ],
+            'controller' => UserLoginDetailsController::class,
+        ],
+    ],
+)]
 class UserLogin
 {
-    use UuidTrait;
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ApiProperty(identifier: false)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['users_list'])]
-    private $uuid;
+    #[ApiProperty(identifier: true)]
+    #[Groups(['users_list', 'users_login_details'])]
+    private Uuid $uuid;
 
     #[ORM\Column(type: 'string', length: 150)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_login_details'])]
     private $username;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['users_login_details'])]
     private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -36,6 +60,9 @@ class UserLogin
 
     #[ORM\Column(type: 'string', length: 255)]
     private $sha256;
+
+    #[ORM\OneToOne(mappedBy: 'login', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    private $user;
 
     public function __construct()
     {
@@ -123,6 +150,23 @@ class UserLogin
     public function setSha256(string $sha256): self
     {
         $this->sha256 = $sha256;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        // set the owning side of the relation if necessary
+        if ($user->getLogin() !== $this) {
+            $user->setLogin($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

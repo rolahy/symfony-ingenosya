@@ -17,15 +17,15 @@ class UserName
     use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 10)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $first;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $last;
 
     public function __construct()

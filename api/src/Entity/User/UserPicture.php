@@ -17,13 +17,15 @@ class UserPicture
     use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_login_details'])]
     private $large;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_login_details'])]
     private $medium;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $thumbnail;
 
     public function __construct()

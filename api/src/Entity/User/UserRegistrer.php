@@ -17,11 +17,11 @@ class UserRegistrer
     use UuidTrait;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $date;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $age;
 
     public function __construct()

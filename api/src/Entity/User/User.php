@@ -3,6 +3,7 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Controller\Import\User\UsersImportController;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRepository;
@@ -15,16 +16,19 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
     collectionOperations: [
-        /* 'import_external_datas' => [
-            'method' => Request::METHOD_GET,
-            'path' => '/users/import',
-            'controller' => UsersImportController::class,
-            'pagination_enabled' => false,
-        ], */
         'get' => [
             'method' => Request::METHOD_GET,
             'normalization_context' => [
                 'groups' => ['users_list'],
+            ],
+        ],
+    ],
+    itemOperations: [
+        'user_details' => [
+            'method' => Request::METHOD_GET,
+            'path' => '/users-details/{id}',
+            'normalization_context' => [
+                'groups' => ['users_login_details'],
             ],
         ],
     ],
@@ -34,16 +38,19 @@ class User
     use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 10)]
+    #[Groups(['users_login_details'])]
     private $gender;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_login_details'])]
     private $phone;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_list', 'users_login_details'])]
     private $cell;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -51,27 +58,28 @@ class User
 
     #[ORM\OneToOne(targetEntity: UserName::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $name;
 
     #[ORM\OneToOne(targetEntity: UserLocation::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_login_details'])]
     private $location;
-
-    #[ORM\OneToOne(targetEntity: UserLogin::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['users_list'])]
-    private $login;
 
     #[ORM\OneToOne(targetEntity: UserRegistrer::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $registered;
 
     #[ORM\OneToOne(targetEntity: UserPicture::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['users_list'])]
+    #[Groups(['users_list', 'users_login_details'])]
     private $picture;
+
+    #[ORM\OneToOne(inversedBy: 'user', targetEntity: UserLogin::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_list'])]
+    private $login;
 
     public function __construct()
     {
@@ -162,18 +170,6 @@ class User
         return $this;
     }
 
-    public function getLogin(): ?UserLogin
-    {
-        return $this->login;
-    }
-
-    public function setLogin(UserLogin $login): self
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
     public function getRegistered(): ?UserRegistrer
     {
         return $this->registered;
@@ -194,6 +190,18 @@ class User
     public function setPicture(UserPicture $picture): self
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getLogin(): ?UserLogin
+    {
+        return $this->login;
+    }
+
+    public function setLogin(UserLogin $login): self
+    {
+        $this->login = $login;
 
         return $this;
     }
