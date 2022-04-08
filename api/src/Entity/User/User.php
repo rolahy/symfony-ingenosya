@@ -3,8 +3,6 @@
 namespace App\Entity\User;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use App\Controller\Import\User\UsersImportController;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\Mapping as ORM;

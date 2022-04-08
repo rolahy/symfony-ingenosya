@@ -2,7 +2,6 @@
 
 namespace App\Entity\User;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserNameRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +10,6 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserNameRepository::class)]
 #[ORM\Table(name: '`user_name`')]
-#[ApiResource()]
 class UserName
 {
     use UuidTrait;

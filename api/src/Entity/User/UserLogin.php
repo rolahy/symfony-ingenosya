@@ -5,7 +5,6 @@ namespace App\Entity\User;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\User\UserLoginDetailsController;
-use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserLoginRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +14,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: UserLoginRepository::class)]
 #[ORM\Table(name: '`user_login`')]
 #[ApiResource(
+    collectionOperations: [],
     itemOperations: [
         'get',
         'login_details' => [
