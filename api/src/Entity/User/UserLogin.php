@@ -5,6 +5,7 @@ namespace App\Entity\User;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserLoginRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserLoginRepository::class)]
@@ -14,9 +15,11 @@ class UserLogin
     use UuidTrait;
 
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['users_list'])]
     private $uuid;
 
     #[ORM\Column(type: 'string', length: 150)]
+    #[Groups(['users_list'])]
     private $username;
 
     #[ORM\Column(type: 'string', length: 255)]

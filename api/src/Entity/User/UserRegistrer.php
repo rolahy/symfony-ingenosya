@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRegistrerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRegistrerRepository::class)]
@@ -16,9 +17,11 @@ class UserRegistrer
     use UuidTrait;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['users_list'])]
     private $date;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['users_list'])]
     private $age;
 
     public function __construct()

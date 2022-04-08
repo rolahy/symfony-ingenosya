@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserNameRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserNameRepository::class)]
@@ -16,12 +17,15 @@ class UserName
     use UuidTrait;
 
     #[ORM\Column(type: 'string', length: 10)]
+    #[Groups(['users_list'])]
     private $title;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['users_list'])]
     private $first;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_list'])]
     private $last;
 
     public function __construct()

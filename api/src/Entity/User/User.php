@@ -8,6 +8,7 @@ use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -20,7 +21,12 @@ use Symfony\Component\Uid\Uuid;
             'controller' => UsersImportController::class,
             'pagination_enabled' => false,
         ], */
-        'get',
+        'get' => [
+            'method' => Request::METHOD_GET,
+            'normalization_context' => [
+                'groups' => ['users_list'],
+            ],
+        ],
     ],
 )]
 class User
@@ -31,6 +37,7 @@ class User
     private $gender;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['users_list'])]
     private $email;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -44,6 +51,7 @@ class User
 
     #[ORM\OneToOne(targetEntity: UserName::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_list'])]
     private $name;
 
     #[ORM\OneToOne(targetEntity: UserLocation::class, cascade: ['persist', 'remove'])]
@@ -52,14 +60,17 @@ class User
 
     #[ORM\OneToOne(targetEntity: UserLogin::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_list'])]
     private $login;
 
     #[ORM\OneToOne(targetEntity: UserRegistrer::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_list'])]
     private $registered;
 
     #[ORM\OneToOne(targetEntity: UserPicture::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['users_list'])]
     private $picture;
 
     public function __construct()

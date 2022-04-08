@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Core\Identifiable\UuidTrait;
 use App\Repository\User\UserPictureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserPictureRepository::class)]
@@ -22,6 +23,7 @@ class UserPicture
     private $medium;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['users_list'])]
     private $thumbnail;
 
     public function __construct()
