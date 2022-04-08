@@ -1,20 +1,120 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserListController!{% endblock %}
+{% set pageTitle = 'Liste des utilisateurs' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="page-breadcrumb">
+        <div class="row">
+        <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">Utilisateurs</h4>
+            <div class="ms-auto text-end">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('front_user_list', {programmingLangage: 'symfony'}) }}">Accueil</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-0">{{ pageTitle }}</h5>
+                    </div>
+                    {% verbatim %}
+                        <div id="app">
+                            <div class="modal fade" id="idUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Informations Utilisateur</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card-body"  v-if="currentUser != null">
+                                            <div class="row">
+                                                <div class="col-md-2 col-sm-12 text-center">
+                                                    <img :src="currentUser.picture.thumbnail" alt="user" class="rounded-circle" width="65">
+                                                </div>
+                                                <div class="col-md-10 col-sm-12 text-left">
+                                                    <strong>Nom complet</strong> : {{currentUser.name.title}} {{currentUser.name.first}} {{currentUser.name.first}}</br>
+                                                    <strong>Nom d'utilisateur</strong> : {{currentUser.login.username}} </br>
+                                                    <strong>Email</strong> : {{currentUser.email}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table" aria-describedby="Users list">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><strong>Prénom</strong></th>
+                                        <th scope="col"><strong>Nom</strong></th>
+                                        <th scope="col"><strong>Email</strong></th>
+                                        <th scope="col"><strong>Détails</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="user in users">
+                                        <td>{{user.name.first}}</td>
+                                        <td>{{user.name.last}}</td>
+                                        <td>{{user.email}}</td>
+                                        <td>
+                                        <em class="me-2 mdi mdi-eye-outline" data-toggle="modal" data-target="#idUp" v-on:click="selectUser(user)"></em>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endverbatim %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/app/front/front/src/Controller/User/UserListController.php'|file_link(0) }}">src/Controller/User/UserListController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/app/front/front/templates/user/user_list/index.html.twig'|file_link(0) }}">templates/user/user_list/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% block scripts %}
+    <script>
+        $("#zero_config").DataTable();
+    </script>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                users : "",
+                currentUser: null
+            },
+            mounted: function () {
+                this.getAllUsers();
+            },
+            methods:{
+                getAllUsers() {
+                    axios.get("http://localhost:4641/api/users").then(function (response) {
+                        app.users = response.data;
+                    })
+                },
+                selectUser(user){
+                    app.currentUser = user;
+                }
+            }
+        })
+    </script>
 {% endblock %}
